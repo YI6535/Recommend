@@ -39,27 +39,27 @@ def main():
     # training
     for epoch in range(args.epochs):
         for i in range(u_len):
-                I_i = np.array(I.getrow(i).todense())[0]
-                u[i] = np.dot(np.linalg.inv(np.dot(m[:, I_i],m[:, I_i].T) +
-                                            noize_rate * I[i].sum() *
-                              np.eye(common_len)),
-                              np.dot(m[:, I_i],id_rating_lil[i, I_i]\
-                                     .transpose().todense())).transpose()
+            I_i = np.array(I.getrow(i).todense())[0]
+            u[i] = np.dot(np.linalg.inv(np.dot(m[:, I_i], m[:, I_i].T) +
+                                        noize_rate * I[i].sum() *
+                                        np.eye(common_len)),
+                          np.dot(m[:, I_i], id_rating_lil[i, I_i]
+                                 .transpose().todense())).transpose()
 
         for j in range(m_len):
-                I_j = np.array(I.transpose().getrow(j).todense())[0]
-                m[:, j] = np.dot(np.linalg.inv(np.dot(u[I_j].T,u[I_j]) +
-                                               noize_rate * I[:, j].sum() *
-                                 np.eye(common_len)),
-                                 np.dot(u[I_j].transpose(),
-                                        id_rating_lil[I_j, j].todense()))[0]
-        
+            I_j = np.array(I.transpose().getrow(j).todense())[0]
+            m[:, j] = np.dot(np.linalg.inv(np.dot(u[I_j].T, u[I_j]) +
+                                           noize_rate * I[:, j].sum() *
+                                           np.eye(common_len)),
+                             np.dot(u[I_j].transpose(),
+                                    id_rating_lil[I_j, j].todense()))[0]
+
         # predict
         pred = np.dot(u, m)
 
         # rmse
-        loss = np.sqrt((np.power((id_rating_lil - pred)[np.array(I.todense())]
-                                 , 2).sum() / training_len))
+        loss = np.sqrt((np.power((id_rating_lil - pred)
+                                 [np.array(I.todense())], 2).sum() / training_len))
 
         # test_loss
         test_loss = 0
