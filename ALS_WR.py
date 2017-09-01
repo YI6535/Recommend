@@ -30,8 +30,7 @@ def main():
     I = id_rating_lil > 0
     u = np.random.uniform(0, 5, u_len * common_len).reshape(u_len, common_len)
     m = np.random.uniform(0, 5, m_len * common_len).reshape(common_len, m_len)
-    u = lil_matrix(u).tocsr()
-    m = lil_matrix(m).tocsc()
+
     noize_rate = args.noize_rate
     # 全データ数が100000でテスト用には各userのratingが１つだけ入っている
     training_len = 100000 - u_len
@@ -40,24 +39,27 @@ def main():
     # training
     for epoch in range(args.epochs):
         for i in range(u_len):
-            I_i = np.array(I.getrow(i).todense())[0]
-            u[i] = (linalg.inv(m[:, I_i].dot(m[:, I_i].T) +
-                               noize_rate * I[i].sum() *
-                               sparse.eye(common_len))).dot(
-                m[:, I_i].dot(id_rating_lil[i, I_i].transpose())).transpose()
+                I_i = np.array(I.getrow(i).todense())[0]
+                u[i] = np.dot(np.linalg.inv(np.dot(m[:, I_i],m[:, I_i].T) +
+                                            noize_rate * I[i].sum() *
+                              np.eye(common_len)),
+                              np.dot(m[:, I_i],id_rating_lil[i, I_i]\
+                                     .transpose().todense())).transpose()
 
         for j in range(m_len):
-            I_j = np.array(I.transpose().getrow(j).todense())[0]
-            m[:, j] = (linalg.inv(u[I_j].T.dot(u[I_j]) +
-                                  noize_rate * I[:, j].sum() *
-                                  sparse.eye(common_len))).dot(
-                u[I_j].transpose().dot(id_rating_lil[I_j, j]).todense())
+                I_j = np.array(I.transpose().getrow(j).todense())[0]
+                m[:, j] = np.dot(np.linalg.inv(np.dot(u[I_j].T,u[I_j]) +
+                                               noize_rate * I[:, j].sum() *
+                                 np.eye(common_len)),
+                                 np.dot(u[I_j].transpose(),
+                                        id_rating_lil[I_j, j].todense()))[0]
+        
         # predict
-        pred = u.dot(m)
+        pred = np.dot(u, m)
 
         # rmse
-        loss = np.sqrt(
-            (np.power((id_rating_lil - pred)[I], 2).sum() / training_len))
+        loss = np.sqrt((np.power((id_rating_lil - pred)[np.array(I.todense())]
+                                 , 2).sum() / training_len))
 
         # test_loss
         test_loss = 0
