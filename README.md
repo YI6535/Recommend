@@ -14,4 +14,4 @@
 * `notebook/data_analysis.ipynb`を実行すると、`data`の下に実装に必要なデータが保存されます。
 
 
-* ``` python ALS_WR.py EPOCHS NOIZE_RATE0 COMMON_LEN ```を実行すると`output`の下に学習後のデータが保存されます。
+* ``` python ALS_WR.py EPOCHS NOIZE_RATE0 COMMON_LEN ```を実行すると`output`の下に学習後のモデルが保存されます。
