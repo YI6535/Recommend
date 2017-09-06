@@ -45,7 +45,7 @@ def main():
                                         np.eye(common_len)),
                           np.dot(m[:, I_i], id_rating_lil[i, I_i]
                                  .transpose().todense())).transpose()
-
+        u[u<0] = 0
         for j in range(m_len):
             I_j = np.array(I.transpose().getrow(j).todense())[0]
             m[:, j] = np.squeeze(np.array(np.dot(np.linalg.inv(np.dot(u[I_j].T, u[I_j]) +
@@ -53,7 +53,7 @@ def main():
                                            np.eye(common_len)),
                              np.dot(u[I_j].transpose(),
                                     id_rating_lil[I_j, j].todense()))))
-
+        m[m<0] = 0
         # predict
         pred = np.dot(u, m)
 
