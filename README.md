@@ -16,7 +16,6 @@
 
 * ``` python ALS_WR.py EPOCHS NOIZE_RATE0 COMMON_LEN ```を実行すると、`output`の下に学習後のモデルが保存されます。
 
-![n-f1](https://gist.github.com/YI6535/3a4b2f82c4a3ee2445a2bf8d8147d1d5.js)
 
 
 <script src="https://gist.github.com/YI6535/3a4b2f82c4a3ee2445a2bf8d8147d1d5.js"></script>
