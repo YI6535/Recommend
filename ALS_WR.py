@@ -1,4 +1,4 @@
-import pandas as pd
+
 import numpy as np
 import pickle
 import os
@@ -28,7 +28,7 @@ def main():
     common_len = args.common_len
     u_len, m_len = id_rating_lil.shape
     I = id_rating_lil > 0
-    u = np.random.uniform(0, 5, u_len * common_len).reshape(u_len, common_len)
+    u = np.zeros_like(u_len, common_len)
     m = np.random.uniform(0, 5, m_len * common_len).reshape(common_len, m_len)
 
     noize_rate = args.noize_rate
