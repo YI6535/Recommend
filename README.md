@@ -18,5 +18,5 @@
 
 
 
-<script src="https://gist.github.com/YI6535/3a4b2f82c4a3ee2445a2bf8d8147d1d5.js"></script>
+<a href='https://gist.github.com/YI6535/3a4b2f82c4a3ee2445a2bf8d8147d1d5.js'>説明</a>
 
