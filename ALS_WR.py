@@ -1,4 +1,3 @@
-
 import numpy as np
 import pickle
 import os
@@ -10,16 +9,16 @@ from module import load_pickle, save_model
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--epochs', '-e', type=int,
+    parser.add_argument('--epochs', '-e', type=int, default=5,
                         help='epoch数の指定')
-    parser.add_argument('--noize_rate', '-r', type=float,
+    parser.add_argument('--noize_rate', '-r', type=float, default=0.01,
                         help='正則化項の倍率指定')
-    parser.add_argument('--common_len', '-c', type=int,
+    parser.add_argument('--common_len', '-c', type=int, default=5,
                         help='共通列の長さ指定')
     parser.add_argument('--output_path', '-p', type=str, default='output',
                         help='modelの保存場所指定')
     args = parser.parse_args()
-
+    movie_sum = load_pickle('data/movie_sum.pickle')
     id_rating = load_pickle('data/id_rating.pickle')
     id_test_rating = load_pickle('data/id_test_rating.pickle')
     id_rating_lil = io.loadmat('data/id_rating_lil.mat')['mat']
@@ -28,8 +27,9 @@ def main():
     common_len = args.common_len
     u_len, m_len = id_rating_lil.shape
     I = id_rating_lil > 0
-    u = np.zeros_like(u_len, common_len)
+    u = np.empty((u_len, common_len))
     m = np.random.uniform(0, 5, m_len * common_len).reshape(common_len, m_len)
+    m[0] = movie_sum/np.sum(I,axis=0)
 
     noize_rate = args.noize_rate
     # 全データ数が100000でテスト用には各userのratingが１つだけ入っている
