@@ -20,7 +20,7 @@
 # 使い方
 ## データの準備
 
-`\\legspin\share\01_projects\NTTファシリティーズ\02_漏水進行判断\01_元データ\20170814` ディレクトリを
+`\\legspin\share\01_projects` ディレクトリを
 `da-nttf-water-leakage/data/original` にコピーする
 
 以下の元データが存在することを仮定します。
